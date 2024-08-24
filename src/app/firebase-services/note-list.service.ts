@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Note } from '../interfaces/note.interface';
 
@@ -26,8 +26,6 @@ export class NoteListService {
     this.unsubNotes = onSnapshot(this.getSingleDocRef("notes", "adf4564547shdhd"), (element) => {
     });
 
-;
-
     this.items$ = collectionData(this.getNotesRef());
     this.items = this.items$.subscribe( (list) => {
       list.forEach(element => {
@@ -35,6 +33,12 @@ export class NoteListService {
       })
     })
     this.items.unsubscribe();
+  }
+
+  async updateNote(colId: string, docId: string, item: {}) {
+    await updateDoc(this.getSingleDocRef(colId, docId), item).catch(
+      (err) => { console.log(err); }
+    ).then();
   }
 
   async addNote(item: Note) {
