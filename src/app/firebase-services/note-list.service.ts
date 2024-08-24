@@ -37,7 +37,7 @@ export class NoteListService {
     this.items.unsubscribe();
   }
 
-  async addNote(item: {}) {
+  async addNote(item: Note) {
     await addDoc(this.getNotesRef(), item).catch((err) => { console.error(err) }
     ).then((docRef) => {console.log("Document written  with ID:", docRef?.id);}
     ) 
