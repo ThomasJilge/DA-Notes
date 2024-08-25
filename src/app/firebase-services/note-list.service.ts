@@ -38,11 +38,17 @@ export class NoteListService {
     this.items.unsubscribe();
   }
 
-  async deleteNote(colId:string, docId:string) {
+  async deleteNote(colId: "notes" | "trash", docId: string) {
     await deleteDoc(this.getSingleDocRef(colId, docId)).catch(
-      (err) => { console.log(err); }
+      (err) =>{ console.log(err) }
     );
   }
+
+  // async deleteNote(colId:string, docId:string) {
+  //   await deleteDoc(this.getSingleDocRef(colId, docId)).catch(
+  //     (err) => { console.log(err); }
+  //   );
+  // }
 
   async updateNote(note: Note) {
     if(note.id) {
@@ -70,11 +76,19 @@ export class NoteListService {
     }
   }
 
-  async addNote(item: Note, p0?: string) {
-    await addDoc(this.getNotesRef(), item).catch((err) => { console.error(err) }
-    ).then((docRef) => {console.log("Document written  with ID:", docRef?.id);}
-    ) 
-  }
+  // async addNote(item: Note, colId: "notes" | "trash") {
+  //   await addDoc(this.getNotesRef(), item).catch((err) => { console.error(err) }
+  //   ).then((docRef) => {console.log("Document written  with ID:", docRef?.id);}
+  //   ) 
+  // }
+
+  async addNote(item: Note, colId: "notes" | "trash") {
+    const collectionRef = collection(this.firestore, colId);
+    await addDoc(collectionRef, item)
+    .catch((err) => { console.error(err) })
+    .then((docRef) => { console.log(docRef); });
+}
+
 
   ngOnDestroy() {
     this.unsubNotes();
@@ -97,17 +111,6 @@ export class NoteListService {
       this.normalNotes = [];
       list.forEach(element => {
         this.normalNotes.push(this.setNoteObject(element.data(), element.id));
-      });
-      list.docChanges().forEach((change) => {
-        if (change.type === "added") {
-            console.log("New note: ", change.doc.data());
-        }
-        if (change.type === "modified") {
-            console.log("Modified note: ", change.doc.data());
-        }
-        if (change.type === "removed") {
-            console.log("Removed note: ", change.doc.data());
-        }
       });
     });
   }

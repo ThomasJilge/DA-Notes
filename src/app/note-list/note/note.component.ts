@@ -38,15 +38,7 @@ export class NoteComponent {
     this.saveNote();
   }
 
-  // moveToTrash(){
-  //   if(this.note.id) {
-  //     this.note.type = 'trash';
-  //     let docId = this.note.id;
-  //     (this.note as any).id = undefined; // Use type assertion
-  //     this.noteService.addNote(this.note, "trash");
-  //     this.noteService.deleteNote("notes", docId);
-  //   }
-  // }
+ 
 
   moveToTrash(){
     if(this.note.id) {
@@ -57,6 +49,7 @@ export class NoteComponent {
       this.noteService.deleteNote("notes", docId);
     }
   }
+
 
   moveToNotes(){
     if (this.note.id) {
@@ -72,6 +65,7 @@ export class NoteComponent {
     if(this.note.id) {
       this.noteService.deleteNote("trash", this.note.id);
     }
+    console.log('note wurde gelöscht');
   }
 
   saveNote(){

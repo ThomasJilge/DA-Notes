@@ -22,6 +22,7 @@ export class AddNoteDialogComponent {
   closeDialog() {
     this.title = "";
     this.description = "";
+    this.content = "";
     this.addDialogClosed.emit(false);
   }
 
@@ -31,9 +32,9 @@ export class AddNoteDialogComponent {
       title: this.title,
       content: this.content,
       marked: false,
-      id: ''
+      // id: ''
     }
-    this.noteService.addNote(note)
+    this.noteService.addNote(note, "notes")
     this.closeDialog();
   }
 }
